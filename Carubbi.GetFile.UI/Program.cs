@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Carubbi.GetFile.UI
@@ -15,7 +13,7 @@ namespace Carubbi.GetFile.UI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmGetFile());
+            Application.Run(new FrmGetFile());
         }
     }
 }

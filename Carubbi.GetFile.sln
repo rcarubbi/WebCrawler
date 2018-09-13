@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carubbi.GetFile.UI", "Carubbi.GetFile.UI\Carubbi.GetFile.UI.csproj", "{AEB06C46-7657-458F-ABA5-8FE7A440BB0E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carubbi.GetFile.ClassLibrary", "Carubbi.GetFile.ClassLibrary\Carubbi.GetFile.ClassLibrary.csproj", "{700D2DE5-5418-4521-87D1-1281A7A26ADA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carubbi.GetFile.PexelsPlugin", "Carubbi.GetFile.PexelsPlugin\Carubbi.GetFile.PexelsPlugin.csproj", "{2DB5D95B-EF9F-4349-BE1A-9BB495A7F02F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +23,15 @@ Global
 		{700D2DE5-5418-4521-87D1-1281A7A26ADA}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{700D2DE5-5418-4521-87D1-1281A7A26ADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{700D2DE5-5418-4521-87D1-1281A7A26ADA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DB5D95B-EF9F-4349-BE1A-9BB495A7F02F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DB5D95B-EF9F-4349-BE1A-9BB495A7F02F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DB5D95B-EF9F-4349-BE1A-9BB495A7F02F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DB5D95B-EF9F-4349-BE1A-9BB495A7F02F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AAB04BC7-7384-4438-B044-2B0CF8357340}
 	EndGlobalSection
 EndGlobal
