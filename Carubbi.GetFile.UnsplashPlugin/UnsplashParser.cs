@@ -1,6 +1,6 @@
-﻿using System;
-using Carubbi.GetFile.ClassLibrary;
+﻿using Carubbi.GetFile.ClassLibrary;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,10 +14,8 @@ namespace Carubbi.GetFile.UnsplashPlugin
         public string Name { get; } = "Unsplash Image Downloader";
         public List<DownloadInfo> Parse(string searchTerm, int maxImages)
         {
-         
             var urlsFound = new List<DownloadInfo>();
             var page = 1;
-             
 
             while (urlsFound.Count < maxImages)
             {
@@ -33,7 +31,6 @@ namespace Carubbi.GetFile.UnsplashPlugin
  
                         foreach (var result in root.results)
                         {
-                          
                             urlsFound.Add(new DownloadInfo{ Url = result.urls.raw, OutputFileName = Path.GetFileName(new Uri(result.urls.raw).AbsolutePath) });
                         }
                         page++;

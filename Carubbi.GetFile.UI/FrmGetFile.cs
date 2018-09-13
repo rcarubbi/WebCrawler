@@ -6,14 +6,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Carubbi.GetFile.UI
 {
     public partial class FrmGetFile : Form
     {
-     
+
         private List<IUrlParser> _plugins;
+
         private bool _isIdle;
         public FrmGetFile()
         {
@@ -56,54 +58,46 @@ namespace Carubbi.GetFile.UI
 
         private void DownloadTask_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            var parameters = (object[]) e.Argument;
+            var parameters = (object[])e.Argument;
 
             Start(parameters[0].ToString(), parameters[1].ToString(), parameters[2].To(0));
+
         }
 
         private void Start(string parserName, string term, int quantity)
         {
+            var tasks = new List<Task>();
+
             var selectedSource = _plugins.FirstOrDefault(p => p.Name == parserName);
             AddLog("Parsing sources...");
             downloadTask.ReportProgress(1);
-            var files = selectedSource.Parse(term, quantity);
-            ThreadPool.SetMaxThreads(5, 5);
 
-            foreach (var file in files)
+            var files = selectedSource.Parse(term, quantity);
+
+
+            Parallel.ForEach(files, (file, state) =>
             {
+
                 if (downloadTask.CancellationPending)
                 {
-                    break;
+                    state.Break();
                 }
 
+                DownloadTask(file, txtDestination.Text);
                 downloadTask.ReportProgress(50);
-                var availableThreads = 0;
-                do
-                {
-                    Thread.Sleep(200);
-                    ThreadPool.GetAvailableThreads(out var availableThreadsCount, out _);
-                    availableThreads = availableThreadsCount;
-                } while (availableThreads == 0);
-
-                var unused = new WaitCallback(CallBackRequisicao);
-                ThreadPool.QueueUserWorkItem(CallBackRequisicao, new object[] { file, txtDestination.Text });
-            }
+            });
         }
 
-        private void CallBackRequisicao(object parameters)
+        private void DownloadTask(DownloadInfo file, string destination)
         {
-            var arguments = (object[])parameters;
-            var file = (DownloadInfo)arguments[0];
-            var destination = (string)arguments[1];
             var output = Path.Combine(destination, file.OutputFileName);
             try
             {
-                var downloader = new Downloader(file.Url, output) ;
+                var downloader = new Downloader(file.Url, output);
                 downloader.Download();
 
                 if (!downloadTask.CancellationPending)
                     AddLog($"File saved from {file.Url} to {output}");
-
             }
             catch (Exception ex)
             {
@@ -147,6 +141,15 @@ namespace Carubbi.GetFile.UI
         {
             _log.Clear();
             lstLog.Items.Clear();
+        }
+
+        private void btnSelectFolder_Click(object sender, EventArgs e)
+        {
+            var result = destinationFolderDialog.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                txtDestination.Text = destinationFolderDialog.SelectedPath;
+            }
         }
     }
 }

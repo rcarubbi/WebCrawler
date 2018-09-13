@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Microsoft.Win32;
 
 namespace Carubbi.GetFile.ClassLibrary
@@ -51,9 +52,9 @@ namespace Carubbi.GetFile.ClassLibrary
                         
                         success = true;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
-
+                        // ignored
                     }
                 }
             }

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carubbi.GetFile.UnsplashPlu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{BF87D5A0-BCCD-4777-A016-381DBECB86AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carubbi.GetFile.VimeoPlugin", "Carubbi.GetFile.VimeoPlugin\Carubbi.GetFile.VimeoPlugin.csproj", "{01295E7D-ED32-41D0-8350-044766C004DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{634F2EBB-240F-4301-B96E-A011BA7F8BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{634F2EBB-240F-4301-B96E-A011BA7F8BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{634F2EBB-240F-4301-B96E-A011BA7F8BBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01295E7D-ED32-41D0-8350-044766C004DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01295E7D-ED32-41D0-8350-044766C004DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01295E7D-ED32-41D0-8350-044766C004DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01295E7D-ED32-41D0-8350-044766C004DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,6 +48,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{2DB5D95B-EF9F-4349-BE1A-9BB495A7F02F} = {BF87D5A0-BCCD-4777-A016-381DBECB86AB}
 		{634F2EBB-240F-4301-B96E-A011BA7F8BBF} = {BF87D5A0-BCCD-4777-A016-381DBECB86AB}
+		{01295E7D-ED32-41D0-8350-044766C004DE} = {BF87D5A0-BCCD-4777-A016-381DBECB86AB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AAB04BC7-7384-4438-B044-2B0CF8357340}

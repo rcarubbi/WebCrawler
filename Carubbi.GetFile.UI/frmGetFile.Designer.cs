@@ -41,15 +41,17 @@
             this.txtTerm = new System.Windows.Forms.TextBox();
             this.downloadTask = new System.ComponentModel.BackgroundWorker();
             this.btnClearLog = new System.Windows.Forms.Button();
+            this.btnSelectFolder = new System.Windows.Forms.Button();
+            this.destinationFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.SuspendLayout();
             // 
             // btnDownload
             // 
             this.btnDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDownload.Location = new System.Drawing.Point(488, 99);
+            this.btnDownload.Location = new System.Drawing.Point(489, 106);
             this.btnDownload.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDownload.Name = "btnDownload";
-            this.btnDownload.Size = new System.Drawing.Size(112, 38);
+            this.btnDownload.Size = new System.Drawing.Size(112, 36);
             this.btnDownload.TabIndex = 8;
             this.btnDownload.Text = "Download";
             this.btnDownload.UseVisualStyleBackColor = true;
@@ -62,7 +64,8 @@
             this.txtDestination.Location = new System.Drawing.Point(122, 60);
             this.txtDestination.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtDestination.Name = "txtDestination";
-            this.txtDestination.Size = new System.Drawing.Size(478, 26);
+            this.txtDestination.ReadOnly = true;
+            this.txtDestination.Size = new System.Drawing.Size(436, 26);
             this.txtDestination.TabIndex = 3;
             // 
             // txtQuantity
@@ -126,6 +129,7 @@
             // 
             // cboSource
             // 
+            this.cboSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboSource.FormattingEnabled = true;
             this.cboSource.Location = new System.Drawing.Point(122, 18);
             this.cboSource.Name = "cboSource";
@@ -158,20 +162,33 @@
             // btnClearLog
             // 
             this.btnClearLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClearLog.Location = new System.Drawing.Point(531, 656);
+            this.btnClearLog.Location = new System.Drawing.Point(529, 657);
             this.btnClearLog.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnClearLog.Name = "btnClearLog";
-            this.btnClearLog.Size = new System.Drawing.Size(112, 38);
+            this.btnClearLog.Size = new System.Drawing.Size(112, 35);
             this.btnClearLog.TabIndex = 13;
             this.btnClearLog.Text = "Clear";
             this.btnClearLog.UseVisualStyleBackColor = true;
             this.btnClearLog.Click += new System.EventHandler(this.btnClearLog_Click);
+            // 
+            // btnSelectFolder
+            // 
+            this.btnSelectFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSelectFolder.Location = new System.Drawing.Point(566, 60);
+            this.btnSelectFolder.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnSelectFolder.Name = "btnSelectFolder";
+            this.btnSelectFolder.Size = new System.Drawing.Size(37, 32);
+            this.btnSelectFolder.TabIndex = 14;
+            this.btnSelectFolder.Text = "...";
+            this.btnSelectFolder.UseVisualStyleBackColor = true;
+            this.btnSelectFolder.Click += new System.EventHandler(this.btnSelectFolder_Click);
             // 
             // FrmGetFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(644, 693);
+            this.Controls.Add(this.btnSelectFolder);
             this.Controls.Add(this.btnClearLog);
             this.Controls.Add(this.lblTerm);
             this.Controls.Add(this.txtTerm);
@@ -208,6 +225,8 @@
         private System.Windows.Forms.TextBox txtTerm;
         private System.ComponentModel.BackgroundWorker downloadTask;
         private System.Windows.Forms.Button btnClearLog;
+        private System.Windows.Forms.Button btnSelectFolder;
+        private System.Windows.Forms.FolderBrowserDialog destinationFolderDialog;
     }
 }
 
