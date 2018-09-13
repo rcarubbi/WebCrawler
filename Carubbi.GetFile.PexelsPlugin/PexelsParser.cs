@@ -1,5 +1,5 @@
-﻿using System;
-using Carubbi.ImageDownloader;
+﻿using Carubbi.GetFile.ClassLibrary;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,17 +10,17 @@ namespace Carubbi.GetFile.PexelsPlugin
 {
     public class PexelsParser : IUrlParser
     {
-        public string BaseUrl { get; } = "https://www.pexels.com/search/{0}/?page={1}&format=js";
+        private string BaseUrl { get; } = "https://www.pexels.com/search/{0}/?page={1}&format=js";
         public string Name { get; } = "Pexels Image Downloader";
 
-        
-        public List<string> Parse(string searchTerm, int maxImages)
+
+        public List<DownloadInfo> Parse(string searchTerm, int maxImages)
         {
             var fileNames = new List<string>();
-            var urlsFound = new List<string>();
+            var urlsFound = new List<DownloadInfo>();
             var page = 1;
             const string pattern = @"(https?:\/\/[^\s]+)";
-            
+
             while (urlsFound.Count < maxImages)
             {
                 var url = string.Format(BaseUrl, searchTerm, page);
@@ -41,7 +41,11 @@ namespace Carubbi.GetFile.PexelsPlugin
                         {
                             var fileName = Path.GetFileName(new Uri(m.Value).AbsolutePath);
                             if (fileNames.Contains(fileName)) continue;
-                            urlsFound.Add(m.Value);
+                            urlsFound.Add(new DownloadInfo()
+                            {
+                                Url = m.Value,
+                                OutputFileName = Path.GetFileName(new Uri(m.Value).AbsolutePath)
+                            });
                             fileNames.Add(fileName);
                         }
                         page++;
@@ -49,7 +53,7 @@ namespace Carubbi.GetFile.PexelsPlugin
                 }
                 catch
                 {
-
+                    // ignored
                 }
             }
 

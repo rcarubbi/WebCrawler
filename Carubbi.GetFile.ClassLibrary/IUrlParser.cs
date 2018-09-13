@@ -1,10 +1,10 @@
 ﻿using Carubbi.ServiceLocator;
 using System.Collections.Generic;
 
-namespace Carubbi.ImageDownloader
+namespace Carubbi.GetFile.ClassLibrary
 {
     public interface IUrlParser : IPlugin
     {
-        List<string> Parse(string searchTerm, int maxImages);
+        List<DownloadInfo> Parse(string searchTerm, int maxImages);
     }
 }

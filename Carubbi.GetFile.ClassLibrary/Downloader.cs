@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Runtime.CompilerServices;
+using Microsoft.Win32;
 
 namespace Carubbi.GetFile.ClassLibrary
 {
@@ -16,6 +18,14 @@ namespace Carubbi.GetFile.ClassLibrary
 
         public string To { get; }
 
+        public static string GetDefaultExtension(string mimeType)
+        {
+            var key = Registry.ClassesRoot.OpenSubKey(@"MIME\Database\Content Type\" + mimeType, false);
+            var value = key?.GetValue("Extension", null);
+            var result = value != null ? value.ToString() : string.Empty;
+
+            return result;
+        }
 
         public void Download()
         {
@@ -27,10 +37,21 @@ namespace Carubbi.GetFile.ClassLibrary
                     {
                         client.Headers.Add("user-agent",
                             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36");
-                        SaveFile(client.DownloadData(From), Path.GetFileName(new Uri(From).AbsolutePath));
+                        var data = client.DownloadData(From);
+                        var to = To;
+                        var fileName = Path.GetFileName(new Uri(To).AbsolutePath);
+                        if (!Path.HasExtension(fileName))
+                        {
+                            var mimeType = client.ResponseHeaders["content-type"];
+                            fileName += GetDefaultExtension(mimeType);
+                            to = Path.Combine(Path.GetDirectoryName(to), fileName);
+                        }
+
+                        SaveFile(data, to);
+                        
                         success = true;
                     }
-                    catch
+                    catch(Exception ex)
                     {
 
                     }
@@ -41,16 +62,14 @@ namespace Carubbi.GetFile.ClassLibrary
 
         private void SaveFile(byte[] data, string fileName)
         {
-             
-            if (!Directory.Exists(To))
+            var directory = Path.GetDirectoryName(fileName);
+            if (!Directory.Exists(directory))
             {
-                Directory.CreateDirectory(To ?? throw new InvalidOperationException());
+                Directory.CreateDirectory(directory);
             }
 
-            var file = Path.Combine(To, fileName);
-            if (File.Exists(file)) return;
-
-            File.WriteAllBytes(file, data);
+            if (File.Exists(fileName)) return;
+            File.WriteAllBytes(fileName, data);
         }
     }
 }

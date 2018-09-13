@@ -1,9 +1,9 @@
 ﻿using Carubbi.Extensions;
 using Carubbi.GetFile.ClassLibrary;
-using Carubbi.ImageDownloader;
 using Carubbi.ServiceLocator;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -93,15 +93,16 @@ namespace Carubbi.GetFile.UI
         private void CallBackRequisicao(object parameters)
         {
             var arguments = (object[])parameters;
-            var file = (string)arguments[0];
+            var file = (DownloadInfo)arguments[0];
             var destination = (string)arguments[1];
+            var output = Path.Combine(destination, file.OutputFileName);
             try
             {
-                var downloader = new Downloader(file, destination);
+                var downloader = new Downloader(file.Url, output) ;
                 downloader.Download();
 
                 if (!downloadTask.CancellationPending)
-                    AddLog($"File saved from {file} to {destination}");
+                    AddLog($"File saved from {file.Url} to {output}");
 
             }
             catch (Exception ex)
