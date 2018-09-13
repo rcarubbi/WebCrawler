@@ -39,6 +39,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Carubbi.Extensions, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Carubbi.Extensions.1.2.2.0\lib\net472\Carubbi.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="Carubbi.ServiceLocator, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Carubbi.ServiceLocator.1.1.1.0\lib\net472\Carubbi.ServiceLocator.dll</HintPath>
     </Reference>

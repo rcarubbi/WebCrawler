@@ -1,4 +1,5 @@
-﻿using Carubbi.GetFile.ClassLibrary;
+﻿using Carubbi.Extensions;
+using Carubbi.GetFile.ClassLibrary;
 using Carubbi.ImageDownloader;
 using Carubbi.ServiceLocator;
 using System;
@@ -11,8 +12,9 @@ namespace Carubbi.GetFile.UI
 {
     public partial class FrmGetFile : Form
     {
+     
         private List<IUrlParser> _plugins;
-
+        private bool _isIdle;
         public FrmGetFile()
         {
             InitializeComponent();
@@ -20,23 +22,72 @@ namespace Carubbi.GetFile.UI
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
-            var selectedSource = _plugins.FirstOrDefault(p => p.Name == cboSource.SelectedItem.ToString());
-            var quantity = int.Parse(txtQuantity.Text);
+            if (_isIdle)
+            {
+                _isIdle = false;
+                btnDownload.Text = "Cancel";
+                downloadTask.RunWorkerAsync(new object[] { cboSource.SelectedItem.ToString(), txtTerm.Text, txtQuantity.Text });
+            }
+            else
+            {
+                downloadTask.CancelAsync();
+                btnDownload.Enabled = false;
+            }
+        }
+
+        private void DownloadTask_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            btnDownload.Enabled = true;
+            Done();
+        }
+
+        private void Done()
+        {
+            btnDownload.Text = "Download";
+            AddLog("------- Requisição concluída ------");
+            FlushLog();
+            _isIdle = true;
+        }
+
+        private void DownloadTask_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+            FlushLog();
+        }
+
+        private void DownloadTask_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            var parameters = (object[]) e.Argument;
+
+            Start(parameters[0].ToString(), parameters[1].ToString(), parameters[2].To(0));
+        }
+
+        private void Start(string parserName, string term, int quantity)
+        {
+            var selectedSource = _plugins.FirstOrDefault(p => p.Name == parserName);
+            AddLog("Parsing sources...");
+            downloadTask.ReportProgress(1);
+            var files = selectedSource.Parse(term, quantity);
             ThreadPool.SetMaxThreads(5, 5);
-            var files = selectedSource.Parse(txtTerm.Text, quantity);
+
             foreach (var file in files)
             {
-                FlushLog();
-                ThreadPool.GetAvailableThreads(out var availableThreadsCount, out _);
-                if (availableThreadsCount > 0)
+                if (downloadTask.CancellationPending)
                 {
-                    var unused = new WaitCallback(CallBackRequisicao);
-                    ThreadPool.QueueUserWorkItem(CallBackRequisicao, new object[] { file, txtDestination.Text });
+                    break;
                 }
-                Thread.Sleep(200);
-            }
 
-            AddLog("------- Requisição concluída ------");   
+                downloadTask.ReportProgress(50);
+                var availableThreads = 0;
+                do
+                {
+                    Thread.Sleep(200);
+                    ThreadPool.GetAvailableThreads(out var availableThreadsCount, out _);
+                    availableThreads = availableThreadsCount;
+                } while (availableThreads == 0);
+
+                var unused = new WaitCallback(CallBackRequisicao);
+                ThreadPool.QueueUserWorkItem(CallBackRequisicao, new object[] { file, txtDestination.Text });
+            }
         }
 
         private void CallBackRequisicao(object parameters)
@@ -48,14 +99,17 @@ namespace Carubbi.GetFile.UI
             {
                 var downloader = new Downloader(file, destination);
                 downloader.Download();
-                AddLog($"File saved from {file} to {destination}");
+
+                if (!downloadTask.CancellationPending)
+                    AddLog($"File saved from {file} to {destination}");
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                AddLog($" ------ Error: {ex.Message} -------");
+                if (!downloadTask.CancellationPending)
+                    AddLog($" ------ Error: {ex.Message} -------");
             }
         }
-
 
         private readonly List<string> _log = new List<string>();
 
@@ -66,19 +120,32 @@ namespace Carubbi.GetFile.UI
 
         private void FlushLog()
         {
+
             foreach (var mensagem in _log)
                 lstLog.Items.Insert(0, mensagem);
+
+            _log.Clear();
         }
 
         private void FrmGetFile_Load(object sender, EventArgs e)
         {
+            _isIdle = true;
             LoadSources();
         }
 
         private void LoadSources()
         {
-           _plugins = ImplementationResolver.GetPlugins<IUrlParser>();
+            downloadTask.DoWork += DownloadTask_DoWork;
+            downloadTask.ProgressChanged += DownloadTask_ProgressChanged;
+            downloadTask.RunWorkerCompleted += DownloadTask_RunWorkerCompleted;
+            _plugins = ImplementationResolver.GetPlugins<IUrlParser>();
             cboSource.DataSource = _plugins.Select(p => p.Name).ToList();
+        }
+
+        private void btnClearLog_Click(object sender, EventArgs e)
+        {
+            _log.Clear();
+            lstLog.Items.Clear();
         }
     }
 }

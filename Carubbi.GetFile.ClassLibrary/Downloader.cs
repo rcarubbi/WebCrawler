@@ -19,24 +19,38 @@ namespace Carubbi.GetFile.ClassLibrary
 
         public void Download()
         {
-            using (var client = new WebClient())
-            {
-                SaveFile(client.DownloadData(From));
+            var success = false;
+            while(!success) { 
+                using (var client = new WebClient())
+                {
+                    try
+                    {
+                        client.Headers.Add("user-agent",
+                            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36");
+                        SaveFile(client.DownloadData(From), Path.GetFileName(new Uri(From).AbsolutePath));
+                        success = true;
+                    }
+                    catch
+                    {
+
+                    }
+                }
             }
         }
 
 
-        private void SaveFile(byte[] data)
+        private void SaveFile(byte[] data, string fileName)
         {
-            var folder = Path.GetDirectoryName(To);
-            if (!Directory.Exists(folder))
+             
+            if (!Directory.Exists(To))
             {
-                Directory.CreateDirectory(folder ?? throw new InvalidOperationException());
+                Directory.CreateDirectory(To ?? throw new InvalidOperationException());
             }
 
-            if (File.Exists(To)) return;
+            var file = Path.Combine(To, fileName);
+            if (File.Exists(file)) return;
 
-            File.WriteAllBytes(To, data);
+            File.WriteAllBytes(file, data);
         }
     }
 }

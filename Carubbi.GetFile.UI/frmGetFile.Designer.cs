@@ -39,6 +39,8 @@
             this.cboSource = new System.Windows.Forms.ComboBox();
             this.lblTerm = new System.Windows.Forms.Label();
             this.txtTerm = new System.Windows.Forms.TextBox();
+            this.downloadTask = new System.ComponentModel.BackgroundWorker();
+            this.btnClearLog = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnDownload
@@ -48,7 +50,7 @@
             this.btnDownload.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDownload.Name = "btnDownload";
             this.btnDownload.Size = new System.Drawing.Size(112, 38);
-            this.btnDownload.TabIndex = 0;
+            this.btnDownload.TabIndex = 8;
             this.btnDownload.Text = "Download";
             this.btnDownload.UseVisualStyleBackColor = true;
             this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
@@ -61,15 +63,15 @@
             this.txtDestination.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtDestination.Name = "txtDestination";
             this.txtDestination.Size = new System.Drawing.Size(478, 26);
-            this.txtDestination.TabIndex = 2;
+            this.txtDestination.TabIndex = 3;
             // 
             // txtQuantity
             // 
-            this.txtQuantity.Location = new System.Drawing.Point(378, 105);
+            this.txtQuantity.Location = new System.Drawing.Point(378, 108);
             this.txtQuantity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtQuantity.Name = "txtQuantity";
             this.txtQuantity.Size = new System.Drawing.Size(102, 26);
-            this.txtQuantity.TabIndex = 3;
+            this.txtQuantity.TabIndex = 7;
             // 
             // lblSource
             // 
@@ -78,7 +80,7 @@
             this.lblSource.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSource.Name = "lblSource";
             this.lblSource.Size = new System.Drawing.Size(60, 20);
-            this.lblSource.TabIndex = 6;
+            this.lblSource.TabIndex = 0;
             this.lblSource.Text = "Source";
             // 
             // lblDestination
@@ -88,7 +90,7 @@
             this.lblDestination.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDestination.Name = "lblDestination";
             this.lblDestination.Size = new System.Drawing.Size(90, 20);
-            this.lblDestination.TabIndex = 7;
+            this.lblDestination.TabIndex = 2;
             this.lblDestination.Text = "Destination";
             // 
             // lblPastaDe
@@ -98,7 +100,7 @@
             this.lblPastaDe.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPastaDe.Name = "lblPastaDe";
             this.lblPastaDe.Size = new System.Drawing.Size(68, 20);
-            this.lblPastaDe.TabIndex = 8;
+            this.lblPastaDe.TabIndex = 6;
             this.lblPastaDe.Text = "Quantity";
             // 
             // lstLog
@@ -108,11 +110,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstLog.FormattingEnabled = true;
             this.lstLog.ItemHeight = 20;
-            this.lstLog.Location = new System.Drawing.Point(2, 153);
+            this.lstLog.Location = new System.Drawing.Point(2, 150);
             this.lstLog.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lstLog.Name = "lstLog";
-            this.lstLog.Size = new System.Drawing.Size(639, 524);
-            this.lstLog.TabIndex = 11;
+            this.lstLog.Size = new System.Drawing.Size(639, 504);
+            this.lstLog.TabIndex = 9;
             // 
             // lblLinks
             // 
@@ -128,7 +130,7 @@
             this.cboSource.Location = new System.Drawing.Point(122, 18);
             this.cboSource.Name = "cboSource";
             this.cboSource.Size = new System.Drawing.Size(478, 28);
-            this.cboSource.TabIndex = 13;
+            this.cboSource.TabIndex = 1;
             // 
             // lblTerm
             // 
@@ -137,22 +139,40 @@
             this.lblTerm.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTerm.Name = "lblTerm";
             this.lblTerm.Size = new System.Drawing.Size(45, 20);
-            this.lblTerm.TabIndex = 15;
+            this.lblTerm.TabIndex = 4;
             this.lblTerm.Text = "Term";
             // 
             // txtTerm
             // 
-            this.txtTerm.Location = new System.Drawing.Point(122, 102);
+            this.txtTerm.Location = new System.Drawing.Point(122, 108);
             this.txtTerm.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtTerm.Name = "txtTerm";
             this.txtTerm.Size = new System.Drawing.Size(172, 26);
-            this.txtTerm.TabIndex = 14;
+            this.txtTerm.TabIndex = 5;
+            // 
+            // downloadTask
+            // 
+            this.downloadTask.WorkerReportsProgress = true;
+            this.downloadTask.WorkerSupportsCancellation = true;
+            // 
+            // btnClearLog
+            // 
+            this.btnClearLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClearLog.Location = new System.Drawing.Point(531, 656);
+            this.btnClearLog.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnClearLog.Name = "btnClearLog";
+            this.btnClearLog.Size = new System.Drawing.Size(112, 38);
+            this.btnClearLog.TabIndex = 13;
+            this.btnClearLog.Text = "Clear";
+            this.btnClearLog.UseVisualStyleBackColor = true;
+            this.btnClearLog.Click += new System.EventHandler(this.btnClearLog_Click);
             // 
             // FrmGetFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(644, 693);
+            this.Controls.Add(this.btnClearLog);
             this.Controls.Add(this.lblTerm);
             this.Controls.Add(this.txtTerm);
             this.Controls.Add(this.cboSource);
@@ -186,6 +206,8 @@
         private System.Windows.Forms.ComboBox cboSource;
         private System.Windows.Forms.Label lblTerm;
         private System.Windows.Forms.TextBox txtTerm;
+        private System.ComponentModel.BackgroundWorker downloadTask;
+        private System.Windows.Forms.Button btnClearLog;
     }
 }
 
